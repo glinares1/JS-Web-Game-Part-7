@@ -1,8 +1,15 @@
-function newNonPlayableCharacter(x, y) {
-    let element = newImage('assets/red-character/static.gif')
+function newNonPlayableCharacter(x, y, speed) {
+    let element = npc('assets/red-character/static.gif')
     element.style.zIndex = 1;
-    
+    var NPC = document.getElementById('red-character');
+    NPC = newNonPlayableCharacter(700,120,1);
     let direction = null;
+
+    function sleep(time)
+    return new Promise(resolve  => {
+        setTimeout(resolve, time)
+        
+    })
 
     function moveCharacter() {
         if (direction === 'west') {
@@ -20,30 +27,37 @@ function newNonPlayableCharacter(x, y) {
         element.style.left = x + 'px'
         element.style.bottom = y + 'px'
     }
+//set time intervasl assync function for npc
 
-    setInterval(moveCharacter, 1)
-
-    function walkEast() {
+    async function walkEast(time) {
         direction = 'east'
         element.src = `./assets/red-character/east.gif`
+        await sleep(time)
+        stop()
     }
 
-    function walkNorth() {
+    async function walkNorth(time) {
         direction = 'north'
         element.src = `./assets/red-character/north.gif`
+        await sleep(time)
+        stop()
     }
 
-    function walkWest() {
+    async function walkWest(time) {
         direction = 'west'
         element.src = `./assets/red-character/west.gif`
+        await sleep(time)
+        stop()
     }
 
-    function walkSouth() {
+    async function walkSouth(time) {
         direction = 'south'
         element.src = `./assets/red-character/south.gif`
+        await sleep(time)
+        stop()
     }
 
-    function stop() {
+    function stop(time) {
         direction = null
         element.src = `./assets/red-character/static.gif`
     }
@@ -56,4 +70,18 @@ function newNonPlayableCharacter(x, y) {
         walkSouth: walkSouth,
         stop: stop
     }
+   
+    
+    async function moveNPC(){
+        await npc.walkEast(2000);
+        await npc.walkSouth(1200);
+        await npc.walkWest(2000);
+        await npc.walkNorth(1200);
+        await npc.walkWest(2000);
+        await npc.walkSouth(1200);
+        await npc.walkEast(2000);
+        await moveNPC();
+    }
+    moveNPC()
+    
 }
